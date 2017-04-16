@@ -23,6 +23,8 @@ HWND hWndStopButton;
 UINT TimmerID = 0;
 int seconds{ 0 };
 char nsec;
+struct tm fTimer;
+char buffer[80];
 
 // The main window class name.  
 static TCHAR szWindowClass[] = _T("win32app");
@@ -102,6 +104,9 @@ int CALLBACK WinMain(
 	}
 
 	// Setup Timer
+	fTimer.tm_sec = 0;
+	fTimer.tm_min = 0;
+	fTimer.tm_hour = 0;
 	//TimmerID = SetTimer(hWnd, 104, 1000, (TIMERPROC)NULL);
 
 	// The parameters to ShowWindow explained:  
@@ -208,9 +213,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_TIMER:
 
-		seconds++;
+		//seconds++;
 		//nSec = std::to_string(seconds)
-		SendMessageA(hEdit, WM_SETTEXT, 0, (LPARAM)std::to_string(seconds).c_str());
+		fTimer.tm_sec++;
+		strftime(buffer, 80, "%T", &fTimer);
+		SendMessageA(hEdit, WM_SETTEXT, 0, (LPARAM)buffer);
 		
 		break;
 

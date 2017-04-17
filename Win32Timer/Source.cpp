@@ -22,9 +22,6 @@ HWND hEdit;
 HWND hWndStartButton;
 HWND hWndStopButton;
 HWND hWndResetButton;
-UINT TimmerID = 0;
-int seconds{ 0 };
-//char nsec;
 struct tm fTimer;
 char buffer[80];
 time_t counter;
@@ -107,12 +104,6 @@ int CALLBACK WinMain(
 		return 1;
 	}
 
-	// Setup Timer
-	fTimer.tm_sec = 0;
-	fTimer.tm_min = 0;
-	fTimer.tm_hour = 0;
-	//TimmerID = SetTimer(hWnd, 104, 1000, (TIMERPROC)NULL);
-
 	// The parameters to ShowWindow explained:  
 	// hWnd: the value returned from CreateWindow  
 	// nCmdShow: the fourth parameter from WinMain  
@@ -142,10 +133,6 @@ int CALLBACK WinMain(
 //  
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	PAINTSTRUCT ps;
-	HDC hdc;
-	TCHAR greeting[] = _T("Welcome to the new Timer app");
-
 	switch (message)
 	{
 	case WM_CREATE:
@@ -203,12 +190,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			(HMENU)106,
 			GetModuleHandle(NULL),
 			NULL);
+		break;
 	case WM_COMMAND:
 		switch (LOWORD(wParam))
 		{
 		case 103:
-			//auto now = time;
-			//SendMessageA(hEdit, WM_SETTEXT, 0, (LPARAM)"Hello");
 			SetTimer(hWnd, 1, 1000, NULL);
 			break;
 		case 105:
@@ -223,18 +209,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		default:
 			break;
 		}
-	case WM_PAINT:
-		hdc = BeginPaint(hWnd, &ps);
-
-		// Here your application is laid out.  
-		// For this introduction, we just print out "Hello, World!"  
-		// in the top left corner.  
-		//TextOut(hdc,
-		//	5, 5,
-		//	greeting, _tcslen(greeting));
-		// End application-specific layout section. 
-
-		EndPaint(hWnd, &ps);
 		break;
 	case WM_TIMER:
 		counter++;

@@ -25,6 +25,7 @@ int seconds{ 0 };
 char nsec;
 struct tm fTimer;
 char buffer[80];
+time_t counter;
 
 // The main window class name.  
 static TCHAR szWindowClass[] = _T("win32app");
@@ -215,10 +216,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		//seconds++;
 		//nSec = std::to_string(seconds)
-		fTimer.tm_sec++;
-		strftime(buffer, 80, "%T", &fTimer);
+
+		counter++;
+		strftime(buffer, 80, "%T", gmtime(&counter));
 		SendMessageA(hEdit, WM_SETTEXT, 0, (LPARAM)buffer);
-		
+	
 		break;
 
 

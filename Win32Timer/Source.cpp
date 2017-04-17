@@ -15,11 +15,13 @@
 #define IDC_MAIN_BUTTON 103;
 #define IDI_TIMER1 104;
 #define IDC_MAIN_STOPBUTTON 105;
+#define IDC_MAIN_RESETBUTTON 106;
 
 // Global variables  
 HWND hEdit;
 HWND hWndStartButton;
 HWND hWndStopButton;
+HWND hWndResetButton;
 UINT TimmerID = 0;
 int seconds{ 0 };
 char nsec;
@@ -87,7 +89,7 @@ int CALLBACK WinMain(
 		szTitle,
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT,
-		500, 100,
+		400, 100,
 		NULL,
 		NULL,
 		hInstance,
@@ -152,7 +154,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			WS_CHILD | WS_VISIBLE,
 			20,
 			30,
-			200,
+			70,
 			20,
 			hWnd,
 			(HMENU)102,
@@ -163,9 +165,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			L"Start",
 			WS_TABSTOP | WS_VISIBLE |
 			WS_CHILD | BS_DEFPUSHBUTTON,
-			250,
-			30,
 			100,
+			30,
+			75,
 			24,
 			hWnd,
 			(HMENU)103,
@@ -176,15 +178,27 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			L"Stop",
 			WS_TABSTOP | WS_VISIBLE |
 			WS_CHILD | BS_DEFPUSHBUTTON,
-			375,
+			185,
 			30,
-			100,
+			75,
 			24,
 			hWnd,
 			(HMENU)105,
 			GetModuleHandle(NULL),
 			NULL);
-		
+		hWndResetButton = CreateWindowEx(NULL,
+			L"BUTTON",
+			L"Reset",
+			WS_TABSTOP | WS_VISIBLE |
+			WS_CHILD | BS_DEFPUSHBUTTON,
+			270,
+			30,
+			75,
+			24,
+			hWnd,
+			(HMENU)106,
+			GetModuleHandle(NULL),
+			NULL);
 	case WM_COMMAND:
 		switch (LOWORD(wParam))
 		{
@@ -195,6 +209,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		case 105:
 			KillTimer(hWnd,1);
+			break;
+		case 106:
+			counter = 0;
+			strftime(buffer, 80, "%T", gmtime(&counter));
+			SendMessageA(hEdit, WM_SETTEXT, 0, (LPARAM)buffer);
 			break;
 		default:
 			break;
@@ -213,17 +232,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		EndPaint(hWnd, &ps);
 		break;
 	case WM_TIMER:
-
-		//seconds++;
-		//nSec = std::to_string(seconds)
-
 		counter++;
 		strftime(buffer, 80, "%T", gmtime(&counter));
 		SendMessageA(hEdit, WM_SETTEXT, 0, (LPARAM)buffer);
-	
 		break;
-
-
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;

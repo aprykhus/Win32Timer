@@ -160,6 +160,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			(HMENU)102,
 			GetModuleHandle(NULL),
 			NULL);
+		strftime(buffer, 80, "%T", gmtime(&counter));
+		SendMessageA(hEdit, WM_SETTEXT, NULL, (LPARAM)buffer);
 		hWndStartButton = CreateWindowEx(NULL,
 			L"BUTTON",
 			L"Start",

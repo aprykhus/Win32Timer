@@ -229,9 +229,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		// Here your application is laid out.  
 		// For this introduction, we just print out "Hello, World!"  
 		// in the top left corner.  
-		TextOut(hdc,
-			5, 5,
-			greeting, _tcslen(greeting));
+		//TextOut(hdc,
+		//	5, 5,
+		//	greeting, _tcslen(greeting));
 		// End application-specific layout section. 
 
 		EndPaint(hWnd, &ps);

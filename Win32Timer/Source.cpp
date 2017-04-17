@@ -24,10 +24,11 @@ HWND hWndStopButton;
 HWND hWndResetButton;
 UINT TimmerID = 0;
 int seconds{ 0 };
-char nsec;
+//char nsec;
 struct tm fTimer;
 char buffer[80];
 time_t counter;
+errno_t err;
 
 // The main window class name.  
 static TCHAR szWindowClass[] = _T("win32app");
@@ -160,7 +161,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			(HMENU)102,
 			GetModuleHandle(NULL),
 			NULL);
-		strftime(buffer, 80, "%T", gmtime(&counter));
+		err = gmtime_s(&fTimer, &counter); // gmtime is deprecated
+		strftime(buffer, 80, "%T", &fTimer);
 		SendMessageA(hEdit, WM_SETTEXT, NULL, (LPARAM)buffer);
 		hWndStartButton = CreateWindowEx(NULL,
 			L"BUTTON",
@@ -214,7 +216,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		case 106:
 			counter = 0;
-			strftime(buffer, 80, "%T", gmtime(&counter));
+			err = gmtime_s(&fTimer, &counter); // gmtime is deprecated
+			strftime(buffer, 80, "%T", &fTimer);
 			SendMessageA(hEdit, WM_SETTEXT, 0, (LPARAM)buffer);
 			break;
 		default:
@@ -235,7 +238,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_TIMER:
 		counter++;
-		strftime(buffer, 80, "%T", gmtime(&counter));
+		err = gmtime_s(&fTimer, &counter); // gmtime is deprecated
+		strftime(buffer, 80, "%T", &fTimer);
 		SendMessageA(hEdit, WM_SETTEXT, 0, (LPARAM)buffer);
 		break;
 	case WM_DESTROY:

@@ -151,7 +151,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		hEdit = CreateWindowEx(WS_EX_STATICEDGE,
 			L"EDIT",
 			L"",
-			WS_CHILD | WS_VISIBLE,
+			WS_CHILD | WS_VISIBLE | ES_READONLY,
 			20,
 			30,
 			70,
@@ -227,7 +227,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		TextOut(hdc,
 			5, 5,
 			greeting, _tcslen(greeting));
-		// End application-specific layout section.  
+		// End application-specific layout section. 
 
 		EndPaint(hWnd, &ps);
 		break;

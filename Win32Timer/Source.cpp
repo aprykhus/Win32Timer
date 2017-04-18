@@ -16,16 +16,19 @@
 #define IDI_TIMER1 104;
 #define IDC_MAIN_STOPBUTTON 105;
 #define IDC_MAIN_RESETBUTTON 106;
+#define IDC_MAIN_DESCRIPTION 107;
+#define IDC_MAIN_SAVEBUTTON 108;
 
 // Global variables  
 HWND hEdit;
 HWND hWndStartButton;
 HWND hWndStopButton;
 HWND hWndResetButton;
+HWND hWndDescEditBox;
+HWND hWndSaveButton;
 struct tm fTimer;
 char buffer[80];
 time_t counter;
-errno_t err;
 
 // The main window class name.  
 static TCHAR szWindowClass[] = _T("win32app");
@@ -140,15 +143,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			L"EDIT",
 			L"",
 			WS_CHILD | WS_VISIBLE | ES_READONLY,
-			20,
-			30,
-			70,
+			5,
+			5,
+			60,
 			20,
 			hWnd,
 			(HMENU)102,
 			GetModuleHandle(NULL),
 			NULL);
-		err = gmtime_s(&fTimer, &counter); // gmtime is deprecated
+		(errno_t)gmtime_s(&fTimer, &counter); // gmtime is deprecated
 		strftime(buffer, 80, "%T", &fTimer);
 		SendMessageA(hEdit, WM_SETTEXT, NULL, (LPARAM)buffer);
 		hWndStartButton = CreateWindowEx(NULL,
@@ -156,8 +159,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			L"Start",
 			WS_TABSTOP | WS_VISIBLE |
 			WS_CHILD | BS_DEFPUSHBUTTON,
-			100,
-			30,
+			75,
+			5,
 			75,
 			24,
 			hWnd,
@@ -169,8 +172,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			L"Stop",
 			WS_TABSTOP | WS_VISIBLE |
 			WS_CHILD | BS_DEFPUSHBUTTON,
-			185,
-			30,
+			150,
+			5,
 			75,
 			24,
 			hWnd,
@@ -182,12 +185,37 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			L"Reset",
 			WS_TABSTOP | WS_VISIBLE |
 			WS_CHILD | BS_DEFPUSHBUTTON,
-			270,
-			30,
+			225,
+			5,
 			75,
 			24,
 			hWnd,
 			(HMENU)106,
+			GetModuleHandle(NULL),
+			NULL);
+		hWndDescEditBox = CreateWindowEx(WS_EX_STATICEDGE,
+			L"EDIT",
+			L"",
+			WS_CHILD | WS_VISIBLE,
+			5,
+			35,
+			370,
+			20,
+			hWnd,
+			(HMENU)107,
+			GetModuleHandle(NULL),
+			NULL);
+		hWndSaveButton = CreateWindowEx(NULL,
+			L"BUTTON",
+			L"Save",
+			WS_TABSTOP | WS_VISIBLE |
+			WS_CHILD | BS_DEFPUSHBUTTON,
+			300,
+			5,
+			75,
+			24,
+			hWnd,
+			(HMENU)108,
 			GetModuleHandle(NULL),
 			NULL);
 		break;
@@ -202,9 +230,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		case 106:
 			counter = 0;
-			err = gmtime_s(&fTimer, &counter); // gmtime is deprecated
+			(errno_t)gmtime_s(&fTimer, &counter); // gmtime is deprecated
 			strftime(buffer, 80, "%T", &fTimer);
 			SendMessageA(hEdit, WM_SETTEXT, 0, (LPARAM)buffer);
+			break;
+		case 107:
+			
 			break;
 		default:
 			break;
@@ -212,7 +243,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_TIMER:
 		counter++;
-		err = gmtime_s(&fTimer, &counter); // gmtime is deprecated
+		(errno_t)gmtime_s(&fTimer, &counter); // gmtime is deprecated
 		strftime(buffer, 80, "%T", &fTimer);
 		SendMessageA(hEdit, WM_SETTEXT, 0, (LPARAM)buffer);
 		break;

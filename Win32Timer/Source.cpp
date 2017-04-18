@@ -9,6 +9,8 @@
 #include <cctype>
 #include "resource.h"
 #include <string>
+#include <iostream>
+#include <fstream>
 
 // Controls
 #define IDC_MAIN_EDIT 102;
@@ -29,6 +31,8 @@ HWND hWndSaveButton;
 struct tm fTimer;
 char buffer[80];
 time_t counter;
+char tlogbuf[20];
+char dlogbuf[100];
 
 // The main window class name.  
 static TCHAR szWindowClass[] = _T("win32app");
@@ -136,6 +140,7 @@ int CALLBACK WinMain(
 //  
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	std::ofstream logfile;
 	switch (message)
 	{
 	case WM_CREATE:
@@ -234,8 +239,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			strftime(buffer, 80, "%T", &fTimer);
 			SendMessageA(hEdit, WM_SETTEXT, 0, (LPARAM)buffer);
 			break;
-		case 107:
-			
+		case 108:
+			logfile.open("D:\\logfile.txt");
+			if (logfile.is_open())
+			{		
+				GetWindowTextA(hEdit, tlogbuf, 20);
+				GetWindowTextA(hWndDescEditBox, dlogbuf, 100);
+				logfile << tlogbuf << " " << dlogbuf << "\n";
+				logfile.close();
+			}
+			else MessageBox(hWnd, L"Logfile not found", L"Error", MB_ICONERROR);
 			break;
 		default:
 			break;

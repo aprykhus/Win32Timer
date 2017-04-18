@@ -151,7 +151,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			5,
 			5,
 			60,
-			20,
+			24,
 			hWnd,
 			(HMENU)102,
 			GetModuleHandle(NULL),
@@ -240,13 +240,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			SendMessageA(hEdit, WM_SETTEXT, 0, (LPARAM)buffer);
 			break;
 		case 108:
-			logfile.open("D:\\logfile.txt");
+			logfile.open("D:\\logfile.txt",std::ios::app);
 			if (logfile.is_open())
 			{		
 				GetWindowTextA(hEdit, tlogbuf, 20);
 				GetWindowTextA(hWndDescEditBox, dlogbuf, 100);
 				logfile << tlogbuf << " " << dlogbuf << "\n";
 				logfile.close();
+				KillTimer(hWnd, 1);
+				counter = 0;
+				(errno_t)gmtime_s(&fTimer, &counter); // gmtime is deprecated
+				strftime(buffer, 80, "%T", &fTimer);
+				SendMessageA(hEdit, WM_SETTEXT, 0, (LPARAM)buffer);
+				SetWindowTextA(hWndDescEditBox, "");
 			}
 			else MessageBox(hWnd, L"Logfile not found", L"Error", MB_ICONERROR);
 			break;

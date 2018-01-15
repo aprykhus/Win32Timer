@@ -23,7 +23,7 @@
     <ProjectGuid>{CA396EB4-BEE4-4928-BB5B-029E45B472E7}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Win32Timer</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

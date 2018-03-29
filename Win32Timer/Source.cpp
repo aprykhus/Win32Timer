@@ -11,6 +11,8 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <Shlobj.h>
+#include <Shlwapi.h>
 
 // Controls
 #define IDC_MAIN_EDIT 102;
@@ -240,7 +242,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			SendMessageA(hEdit, WM_SETTEXT, 0, (LPARAM)buffer);
 			break;
 		case 108:
-			logfile.open("D:\\logfile.txt",std::ios::app);
+			TCHAR szPath[MAX_PATH];
+
+			if (SUCCEEDED(SHGetFolderPath(NULL,
+				CSIDL_PERSONAL | CSIDL_FLAG_CREATE,
+				NULL,
+				0,
+				szPath)))
+				PathAppend(szPath, TEXT("TimerLog.txt"));
+
+			logfile.open(szPath,std::ios::app);
 			if (logfile.is_open())
 			{		
 				GetWindowTextA(hEdit, tlogbuf, 20);

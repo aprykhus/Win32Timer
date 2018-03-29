@@ -151,6 +151,9 @@
     <Image Include="..\..\..\..\..\Pictures\StopWatch.bmp" />
     <Image Include="icon1.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Library Include="C:\Program Files (x86)\Windows Kits\10\Lib\10.0.16299.0\um\x86\ShLwApi.Lib" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

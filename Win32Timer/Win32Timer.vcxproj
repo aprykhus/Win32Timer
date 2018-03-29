@@ -148,6 +148,7 @@
     <ResourceCompile Include="Win32Timer.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\..\..\Pictures\StopWatch.bmp" />
     <Image Include="icon1.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
